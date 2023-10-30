@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Loja de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #cc0000;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        h2 {
+            color: #660000;
+            font-family: Arial, sans-serif;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px;
+            display: inline-block;
+            background-color: #fff;
+            width: 250px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #shoppingList {
+            text-align: left;
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 20px;
+            width: 250px;
+            margin: 0 auto;
+        }
+
+        #confirmButton {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #confirmButton:hover {
+            background-color: #00688B;
+        }
+    </style>
+    <script>
+        var shoppingList = [];
+        var saldo = 1000;
+        
+        
+        function addToCart(productId, productName, productPrice) {
+            if (saldo - productPrice >= 0) {
+                shoppingList.push({ id: productId, name: productName });
+                saldo -= productPrice;
+                updateList();
+            } else {
+                alert("Saldo insuficiente. Você não pode adicionar mais itens ao carrinho.");
+            }
+        }
+        
+        function addToCart(productId, productName) {
+            shoppingList.push({ id: productId, name: productName });
+            updateList();
+        }
+
+        function deleteFromCart(index) {
+            shoppingList.splice(index, 1);
+            updateList();
+        }
+
+        function updateList() {
+            var listElement = document.getElementById("shoppingList");
+            listElement.innerHTML = "";
+            shoppingList.forEach(function (item, index) {
+                var listItem = document.createElement("li");
+                listItem.appendChild(document.createTextNode(item.name));
+                var deleteButton = document.createElement("button");
+                deleteButton.appendChild(document.createTextNode("Excluir"));
+                deleteButton.onclick = function () {
+                    var productPrice = 0; // Obtenha o preço do produto
+                    deleteFromCart(index, productPrice);
+                };
+                listItem.appendChild(deleteButton);
+                listElement.appendChild(listItem);
+            });
+            document.getElementById("saldo").innerText = "Saldo: R$" + saldo.toFixed(2);
+        }
+
+        function confirmPurchase() {
+            if (shoppingList.length > 0) {
+                var confirmation = confirm("Deseja confirmar a compra?");
+                if (confirmation) {
+                    alert("Compra confirmada! Obrigado por comprar conosco.");
+                }
+            } else {
+                alert("Adicione itens ao carrinho antes de confirmar a compra.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Bem-vindo/a à Retro Shop</h1>
+
+    <div class="product">
+        <img src="Untitled.jpeg" alt="Guns N Roses Use Your Illusion" width = 150 height = 100>
+        <h2>Guns N' Roses Use Your Illusion</h2>
+        <p>Um verdadeiro clássico da banda em uma edição remasterizada.</p>
+        <p>Preço: R$100,00</p>
+        <button onclick="addToCart(1, 'Produto 1')">Adicionar ao Carrinho</button>
+    </div>
+
+    <div class="product">
+        <img src="supernintendo.jpg" alt="Super Nintendo" width="150" height="100">
+        <h2>Super Nintendo</h2>
+        <p>Um relançamento de um console que marcou a quinta geração de games, com direito à brinde de 5 cartuchos, incluindo Final Fantasy IV, V e VI, Super Metroid e Chrono Trigger.</p>
+        <p>Preço: R$150,00</p>
+        <button onclick="addToCart(2, 'Produto 2')">Adicionar ao Carrinho</button>
+    </div>
+
+    <div class="product">
+        <img src="VHS-cassette.jpg" alt="Cassete VHS" width="150" height="100">
+        <h2>VHS</h2>
+        <p>Um VHS, contendo shows armazenados de Faith No More no Rock In Rio 91, Iron Maiden, além de shows do Metallica em San Diego em 1992 e em Seattle em 1989.</p>
+        <p>Preço: R$200,00</p>
+        <button onclick="addToCart(3, 'Produto 3')">Adicionar ao Carrinho</button>
+    
+    </div>
+
+
+    <h2>Lista de Compras:</h2>
+    <ul id="shoppingList"></ul>
+
+    <button id="confirmButton" onclick="confirmPurchase()">Confirmar Compra</button>
+</body>
+
+</html>
